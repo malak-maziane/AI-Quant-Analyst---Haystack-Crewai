@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block title %}Error - AI Quant Analyst{% endblock %}
+
+{% block content %}
+<div class="error-container">
+    <div class="error-icon">❌</div>
+    <h1>Oops! Something went wrong</h1>
+    <p class="error-message">
+        {% if error_message %}
+            {{ error_message }}
+        {% else %}
+            An unexpected error occurred during analysis.
+        {% endif %}
+    </p>
+    
+    <div class="error-actions">
+        <a href="{{ url_for('main.index') }}" class="btn btn-primary">Try Again</a>
+        <a href="mailto:support@example.com" class="btn btn-outline">Report Issue</a>
+    </div>
+    
+    <div class="error-details">
+        <details>
+            <summary>Technical Details</summary>
+            <pre>{{ error_details | default("No additional details available.") }}</pre>
+        </details>
+    </div>
+</div>
+{% endblock %}

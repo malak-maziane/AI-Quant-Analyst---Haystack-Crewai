@@ -1,0 +1,132 @@
+{% extends "base.html" %}
+
+{% block title %}AI Quant Analyst - Stock Analysis{% endblock %}
+
+{% block content %}
+<div class="hero-dashboard">
+    <aside class="hero-sidebar">
+        <div class="sidebar-card sidebar-brand">
+            <div class="brand-icon">AI</div>
+            <div>
+                <p class="sidebar-label">AI Quant Analyst</p>
+                <h2>System</h2>
+            </div>
+        </div>
+
+        <div class="sidebar-card">
+            <p class="sidebar-label">Analysis Features</p>
+            <nav class="feature-list">
+                <div class="feature-item">
+                    <span class="feature-icon">📊</span>
+                    <div>
+                        <strong>Market Data</strong>
+                        <p>Real-time prices, SMA indicators, volatility analysis</p>
+                    </div>
+                </div>
+                <div class="feature-item">
+                    <span class="feature-icon">📰</span>
+                    <div>
+                        <strong>News & Sentiment</strong>
+                        <p>AI-powered sentiment analysis from multiple sources</p>
+                    </div>
+                </div>
+                <div class="feature-item">
+                    <span class="feature-icon">⚠️</span>
+                    <div>
+                        <strong>Risk Assessment</strong>
+                        <p>Comprehensive risk analysis with detailed reasoning</p>
+                    </div>
+                </div>
+                <div class="feature-item">
+                    <span class="feature-icon">🎯</span>
+                    <div>
+                        <strong>AI Recommendation</strong>
+                        <p>BUY/HOLD/SELL with confidence scores and justification</p>
+                    </div>
+                </div>
+            </nav>
+        </div>
+
+        <div class="sidebar-card sidebar-info">
+            <p class="sidebar-label">About</p>
+            <p>Multi-agent AI system powered by CrewAI and Haystack for financial analysis</p>
+        </div>
+    </aside>
+
+    <div class="hero">
+        <div class="hero-container">
+            <h1>AI Quant Analyst Assistant</h1>
+            <p>Multi-Agent Financial Decision System with Real-Time Stock Analysis</p>
+            
+            <div class="form-container">
+                <form method="post" enctype="multipart/form-data">
+                    {{ form.hidden_tag() }}
+                    
+                    <div class="form-group">
+                        <label for="ticker">Stock Ticker</label>
+                        {{ form.ticker(class="form-input", placeholder="e.g., AAPL, MSFT, GOLD") }}
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="document">Financial Document (Optional)</label>
+                        {{ form.document(class="form-input") }}
+                        <small class="form-help">Upload PDF or text file for document analysis</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="question">Question (Optional)</label>
+                        {{ form.question(class="form-input", placeholder="Ask a specific question about the stock") }}
+                        <small class="form-help">Ask a specific stock question to populate the QA tab.</small>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary">
+                        {{ form.submit.label.text }}
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<section class="section">
+    <div class="container">
+        <h2>How It Works</h2>
+        <div class="steps-grid">
+            <div class="step-card">
+                <div class="step-number">1</div>
+                <h3>Data Collection</h3>
+                <p>Fetch real-time stock data and technical indicators using yfinance</p>
+            </div>
+            <div class="step-card">
+                <div class="step-number">2</div>
+                <h3>AI Analysis</h3>
+                <p>4 specialized AI agents analyze market trends, news sentiment, and risk</p>
+            </div>
+            <div class="step-card">
+                <div class="step-number">3</div>
+                <h3>Decision Making</h3>
+                <p>Generate BUY/HOLD/SELL recommendations with detailed reasoning</p>
+            </div>
+            <div class="step-card">
+                <div class="step-number">4</div>
+                <h3>Visualization</h3>
+                <p>Interactive charts and comprehensive analysis dashboard</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="section section-alt">
+    <div class="container">
+        <h2>Technology Stack</h2>
+        <div class="tech-stack">
+            <span class="tech-badge">Haystack</span>
+            <span class="tech-badge">CrewAI</span>
+            <span class="tech-badge">yfinance</span>
+            <span class="tech-badge">Flask</span>
+            <span class="tech-badge">Streamlit</span>
+            <span class="tech-badge">Python</span>
+        </div>
+    </div>
+</section>
+{% endblock %}

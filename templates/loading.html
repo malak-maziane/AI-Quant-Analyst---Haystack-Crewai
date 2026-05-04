@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+
+{% block title %}Analyzing - {{ session.get('ticker', 'Stock') }}{% endblock %}
+
+{% block content %}
+<div class="loading-container">
+    <div class="loading-header">
+        <h1>🤖 AI Analysis in Progress</h1>
+        <p>Our team of AI agents is analyzing {{ session.get('ticker', 'your stock') }}</p>
+    </div>
+
+    <div class="loading-spinner">
+        <div class="spinner"></div>
+    </div>
+
+    <div class="loading-steps">
+        <div class="step active" id="step1">
+            <span class="step-icon">🔍</span>
+            <span class="step-text">Fetching market data...</span>
+        </div>
+        <div class="step" id="step2">
+            <span class="step-icon">📰</span>
+            <span class="step-text">Analyzing documents with Haystack...</span>
+        </div>
+        <div class="step" id="step3">
+            <span class="step-icon">⚠️</span>
+            <span class="step-text">Evaluating risk...</span>
+        </div>
+        <div class="step" id="step4">
+            <span class="step-icon">✅</span>
+            <span class="step-text">Generating recommendation...</span>
+        </div>
+    </div>
+
+    <div class="progress-bar">
+        <div class="progress-fill" id="progressFill"></div>
+    </div>
+
+    <p class="loading-note">This may take 30-60 seconds...</p>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    let currentStep = 1;
+    const totalSteps = 4;
+    const stepDuration = 8000; // 8 seconds per step
+
+    function updateProgress() {
+        const progress = (currentStep / totalSteps) * 100;
+        document.getElementById('progressFill').style.width = progress + '%';
+        
+        // Update step visibility
+        for (let i = 1; i <= totalSteps; i++) {
+            const stepEl = document.getElementById('step' + i);
+            if (i <= currentStep) {
+                stepEl.classList.add('active');
+            } else {
+                stepEl.classList.remove('active');
+            }
+        }
+        
+        if (currentStep < totalSteps) {
+            currentStep++;
+            setTimeout(updateProgress, stepDuration);
+        } else {
+            // Redirect to results when done
+            setTimeout(() => {
+                window.location.href = '{{ url_for("main.result") }}';
+            }, 2000);
+        }
+    }
+
+    // Start progress animation
+    setTimeout(updateProgress, 1000);
+</script>
+{% endblock %}

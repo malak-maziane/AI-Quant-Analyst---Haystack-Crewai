@@ -1,0 +1,232 @@
+{% extends "base.html" %}
+
+{% block title %}Analysis Results - {{ result.ticker }}{% endblock %}
+
+{% block content %}
+<div class="dashboard-grid">
+    <aside class="dashboard-sidebar">
+        <div class="sidebar-card sidebar-brand">
+            <div class="brand-icon">AI</div>
+            <div>
+                <p class="sidebar-label">AI Quant Analyst</p>
+                <h2>Dashboard</h2>
+            </div>
+        </div>
+
+        <nav class="sidebar-nav">
+            <a class="sidebar-link active" href="#summary">Dashboard</a>
+            <a class="sidebar-link" href="#market">Market Data</a>
+            <a class="sidebar-link" href="#news">News & Docs</a>
+            <a class="sidebar-link" href="#recommendation">Recommendation</a>
+            <a class="sidebar-link" href="#risk">Risk</a>
+        </nav>
+
+        <div class="sidebar-card sidebar-ticker">
+            <span class="sidebar-label">Ticker</span>
+            <h3>{{ result.ticker }}</h3>
+            <p>{{ result.company_name }}</p>
+        </div>
+    </aside>
+
+    <main class="dashboard-main">
+        <section class="top-metrics">
+            <div class="small-card">
+                <span class="metric-label">Current Price</span>
+                <strong>${{ "%.2f"|format(result.market_data.current_price) }}</strong>
+                <span class="metric-note">+{{ "%.2f"|format(result.market_data.change_percent | default(0)) }}% today</span>
+            </div>
+            <div class="small-card">
+                <span class="metric-label">SMA 7</span>
+                <strong>${{ "%.2f"|format(result.market_data.sma_7) }}</strong>
+                <span class="metric-note">Bullish signal</span>
+            </div>
+            <div class="small-card">
+                <span class="metric-label">SMA 20</span>
+                <strong>${{ "%.2f"|format(result.market_data.sma_20) }}</strong>
+                <span class="metric-note">Support level</span>
+            </div>
+            <div class="small-card">
+                <span class="metric-label">Volatility</span>
+                <strong>{{ "%.2f"|format(result.market_data.volatility) }}%</strong>
+                <span class="metric-note">Medium risk</span>
+            </div>
+        </section>
+
+        <section class="dashboard-section" id="summary">
+            <div class="card chart-card">
+                <div class="card-title">
+                    <h3>Price history — 60 days</h3>
+                </div>
+                <canvas id="priceChart" width="400" height="250"></canvas>
+            </div>
+
+        <section class="card recommendation-panel" id="recommendation">
+            <div class="recommendation-label">Investment Recommendation</div>
+            <div class="recommendation-value recommendation-{{ result.recommendation.decision.lower() }}">
+                {{ result.recommendation.decision }}
+            </div>
+            <div class="confidence-chip">
+                {{ "%.0f" | format(result.recommendation.confidence * 100) }}% CONFIDENCE
+            </div>
+            <p class="recommendation-copy">{{ result.recommendation.reasoning }}</p>
+            
+            {% if result.recommendation.get('key_factors_analysis') %}
+            <div class="explanation-box">
+                <h4>Key Factors Analysis</h4>
+                <p>{{ result.recommendation.key_factors_analysis }}</p>
+            </div>
+            {% endif %}
+            
+            {% if result.recommendation.get('decision_reasoning') %}
+            <div class="explanation-box">
+                <h4>Decision Reasoning</h4>
+                <p>{{ result.recommendation.decision_reasoning }}</p>
+            </div>
+            {% endif %}
+            
+            <div class="risk-summary">
+                <span>Risk Score</span>
+                <strong>{{ result.risk_assessment.score }}/100</strong>
+            </div>
+        </section>
+        </section>
+
+        <section class="dashboard-section grid-2" id="market">
+            <div class="card market-card">
+                <div class="card-title">
+                    <h3>Technical Analysis</h3>
+                </div>
+                <div class="metric-grid">
+                    <div class="metric-item">
+                        <span class="metric-label">Trend</span>
+                        <strong class="trend-badge trend-{{ result.market_data.trend.lower() }}">
+                            {{ result.market_data.trend }}
+                        </strong>
+                    </div>
+                    <div class="metric-item">
+                        <span class="metric-label">Volatility</span>
+                        <strong>{{ "%.2f"|format(result.market_data.volatility) }}%</strong>
+                    </div>
+                </div>
+                
+                {% if result.market_data.get('trend_explanation') %}
+                <div class="explanation-box">
+                    <h4>Trend Analysis</h4>
+                    <p>{{ result.market_data.trend_explanation }}</p>
+                </div>
+                {% endif %}
+            </div>
+
+            <div class="card news-card" id="news">
+                <div class="card-title">
+                    <h3>News & Sentiment</h3>
+                </div>
+                <div class="sentiment-banner sentiment-{{ result.news_analysis.sentiment.lower() }}">
+                    <strong>{{ result.news_analysis.sentiment }}</strong>
+                    <span>Score: {{ "%.1f" | format(result.news_analysis.sentiment_score) }}</span>
+                </div>
+                {% if result.news_analysis.get('sentiment_explanation') %}
+                <div class="explanation-box">
+                    <h4>Sentiment Analysis</h4>
+                    <p>{{ result.news_analysis.sentiment_explanation }}</p>
+                </div>
+                {% endif %}
+                <div class="insights-list">
+                    <p class="list-title">Key Insights</p>
+                    {% if result.news_analysis.insights %}
+                        {% for insight in result.news_analysis.insights %}
+                        <div class="insight-item">• {{ insight }}</div>
+                        {% endfor %}
+                    {% else %}
+                        <p class="text-muted">No specific insights available</p>
+                    {% endif %}
+                </div>
+                <div class="rag-section">
+                    <p class="list-title">🔍 Recherche intelligente avec Haystack RAG</p>
+                    {% if result.news_analysis.knowledge_base %}
+                        {% if result.news_analysis.rag_passages and result.news_analysis.rag_passages|length > 0 %}
+                            <ul class="rag-list">
+                            {% for passage in result.news_analysis.rag_passages %}
+                                <li class="rag-passage">{{ passage }}</li>
+                            {% endfor %}
+                            </ul>
+                        {% else %}
+                            <p class="text-muted">Aucun passage pertinent trouvé par Haystack RAG.</p>
+                        {% endif %}
+                    {% else %}
+                        <p class="text-muted">Recherche intelligente désactivée ou aucune base de connaissance construite.</p>
+                    {% endif %}
+                </div>
+            </div>
+        </section>
+
+        <section class="card risk-card" id="risk">
+            <div class="card-title">
+                <h3>Risk Analysis</h3>
+            </div>
+            <div class="risk-detail">
+                <span>Risk Level</span>
+                <strong class="risk-level risk-{{ result.risk_assessment.level.lower() }}">{{ result.risk_assessment.level }}</strong>
+            </div>
+            <div class="risk-meter-large">
+                <div class="risk-fill" style="width: {{ result.risk_assessment.score }}%"></div>
+            </div>
+            <p class="risk-score-text">Risk Score: <strong>{{ result.risk_assessment.score }}/100</strong></p>
+            
+            {% if result.risk_assessment.get('detailed_risk_explanation') or result.risk_assessment.get('risk_explanation') %}
+            <div class="explanation-box">
+                <h4>Risk Assessment</h4>
+                <p>{{ result.risk_assessment.get('detailed_risk_explanation') or result.risk_assessment.get('risk_explanation') }}</p>
+            </div>
+            {% endif %}
+        </section>
+
+        <section class="card agent-card">
+            <div class="card-title">
+                <h3>Agent Insights</h3>
+            </div>
+            {% if result.agent_works %}
+                {% for agent, work in result.agent_works.items() %}
+                <div class="agent-row">
+                    <h4>{{ agent.replace('_', ' ').title() }}</h4>
+                    <p>{{ work }}</p>
+                </div>
+                {% endfor %}
+            {% else %}
+                <p>No agent work details available yet.</p>
+            {% endif %}
+        </section>
+
+        <div class="actions">
+            <a href="{{ url_for('main.index') }}" class="btn btn-secondary">Analyze Another Stock</a>
+            <button class="btn btn-outline" onclick="downloadJSON()">Download JSON</button>
+        </div>
+    </main>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="{{ url_for('static', filename='js/charts.js') }}"></script>
+<script>
+    const chartData = {
+        dates: {{ result.market_data.price_history.dates | tojson }},
+        prices: {{ result.market_data.price_history.prices | tojson }},
+        sma7: {{ result.market_data.price_history.sma7 | tojson }},
+        sma20: {{ result.market_data.price_history.sma20 | tojson }}
+    };
+    
+    const resultData = {{ result | tojson }};
+    
+    function downloadJSON() {
+        const dataStr = JSON.stringify(resultData, null, 2);
+        const dataUri = 'data:application/json;charset=utf-8,' + encodeURIComponent(dataStr);
+        const exportFileDefaultName = `analysis_${resultData.ticker}.json`;
+        
+        const linkElement = document.createElement('a');
+        linkElement.setAttribute('href', dataUri);
+        linkElement.setAttribute('download', exportFileDefaultName);
+        linkElement.click();
+    }
+</script>
+{% endblock %}
