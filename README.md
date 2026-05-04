@@ -449,26 +449,6 @@ Typical analysis runtime on standard hardware:
 
 ---
 
-## Contributing
-
-Contributions are welcome! Please follow these guidelines:
-
-1. Fork the repository
-2. Create a feature branch (git checkout -b feature/amazing-feature)
-3. Commit your changes (git commit -m 'Add amazing feature')
-4. Push to the branch (git push origin feature/amazing-feature)
-5. Open a Pull Request
-
-### Contribution Areas
-- Bug fixes and error handling
-- New agents or analysis types
-- Additional data sources
-- UI/UX improvements
-- Documentation and examples
-- Test coverage
-
----
-
 ## License
 
 This project is licensed under the MIT License - see the LICENSE file for details.
@@ -488,40 +468,6 @@ You must:
 ## Support & Contact
 
 - Email: malakmaziane2@gmail.com
-- GitHub Issues: https://github.com/malak-maziane/AI-Quant-Analyst---Haystack-Crewai/issues
-- GitHub Discussions: https://github.com/malak-maziane/AI-Quant-Analyst---Haystack-Crewai/discussions
-
----
-
-## Roadmap
-
-### Phase 1: Complete (v1.0)
-- [x] Multi-agent AI framework
-- [x] Technical analysis module
-- [x] Sentiment analysis
-- [x] Risk assessment
-- [x] Streamlit dashboard
-- [x] Flask API
-
-### Phase 2: In Progress (v1.5)
-- [ ] Backtesting engine
-- [ ] Portfolio optimization
-- [ ] Options pricing (Black-Scholes)
-- [ ] Machine learning predictions
-- [ ] Email alerts and notifications
-
-### Phase 3: Planned (v2.0)
-- [ ] Real-time WebSocket API
-- [ ] Docker containerization
-- [ ] Cloud deployment (AWS/GCP)
-- [ ] Mobile app
-- [ ] Premium features (paid tier)
-
----
-
-## Author
-
-Malak Maziane - malakmaziane2@gmail.com
 
 ---
 
