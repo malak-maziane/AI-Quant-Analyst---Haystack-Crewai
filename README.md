@@ -176,6 +176,14 @@ python -m venv .venv
 pip install -r requirements.txt
 ```
 
+### Activate the Virtual Environment on Windows
+If PowerShell blocks the activation script, run this first:
+
+```powershell
+Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
+.\.venv\Scripts\Activate.ps1
+```
+
 ### Environment Variables
 Create a .env file with the required values if you want to enable full LLM-based reasoning:
 
