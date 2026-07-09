@@ -1,474 +1,273 @@
-# AI Quant Analyst - Haystack + CrewAI
-### Enterprise-Grade Financial Analysis Platform Powered by Multi-Agent AI and RAG
+# AI Quant Analyst - Haystack + CrewAi
+## Wall Street Intelligence Platform by Malak Maziane
 
-<div align="center">
+AI Quant Analyst is an intelligent financial analysis platform designed to help users explore market trends, assess risk, and generate investment recommendations using a combination of real-time market data, document-based reasoning, and multi-agent artificial intelligence. Built around Haystack, CrewAI, and modern web interfaces, the project brings together financial data analysis, news understanding, and automated decision support in a single workflow.
 
-![Python](https://img.shields.io/badge/Python-3.10+-blue.svg?style=flat-square&logo=python)
-![CrewAI](https://img.shields.io/badge/CrewAI-0.28.0+-orange.svg?style=flat-square)
-![Haystack](https://img.shields.io/badge/Haystack-2.3.0+-green.svg?style=flat-square)
-![Flask](https://img.shields.io/badge/Flask-3.0.3-black.svg?style=flat-square&logo=flask)
-![Streamlit](https://img.shields.io/badge/Streamlit-1.35.0-red.svg?style=flat-square&logo=streamlit)
-![License](https://img.shields.io/badge/License-MIT-green.svg?style=flat-square)
-
-Revolutionary AI-powered financial analysis combining Multi-Agent AI, Retrieval Augmented Generation (RAG), and real-time market data to deliver institutional-grade investment recommendations.
-
-[Features](#features) • [Quick Start](#quick-start) • [Architecture](#architecture) • [API](#api-endpoints) • [Contributing](#contributing)
-
-</div>
+[![Python](https://img.shields.io/badge/Python-3.10%2B-blue.svg)](https://www.python.org/)
+[![CrewAI](https://img.shields.io/badge/CrewAI-0.28.0-orange.svg)](https://www.crewai.com/)
+[![Haystack](https://img.shields.io/badge/Haystack-2.3.0-green.svg)](https://haystack.deepset.ai/)
+[![Flask](https://img.shields.io/badge/Flask-3.0.3-black.svg)](https://flask.palletsprojects.com/)
+[![Streamlit](https://img.shields.io/badge/Streamlit-1.35.0-red.svg)](https://streamlit.io/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 
 ---
 
-## What is AI Quant Analyst?
+## Overview
 
-AI Quant Analyst is a next-generation financial intelligence platform that deploys a team of autonomous AI specialists who collaborate in real-time to analyze markets, evaluate risks, and generate data-driven investment recommendations. Unlike traditional financial analysis tools, our system combines:
+AI Quant Analyst is built to simulate the workflow of a professional financial research team. Instead of relying on a single model, the system coordinates several specialized agents that collaborate to analyze market data, interpret financial documents, evaluate risk, and produce a final investment recommendation.
 
-- Multi-Agent AI (4 specialized agents working together)
-- Retrieval Augmented Generation (RAG with financial document understanding)
-- Real-Time Market Data (yfinance, Finnhub, NewsAPI)
-- Institutional-Grade Analysis (Technical, Sentiment, Risk, Advisory)
-- Dual Interfaces (Flask API + Streamlit Dashboard)
-
-**Perfect for:** Quantitative traders, Finance students, Portfolio managers, Investment analysts, AI/ML practitioners, FinTech developers
+The project is especially useful for:
+- Students and researchers studying AI in finance
+- Quantitative analysts exploring autonomous workflows
+- Developers building financial decision-support systems
+- Investors who want a structured analysis of a stock or market scenario
 
 ---
 
-## Features
+## Key Features
 
-### Comprehensive Financial Analysis
-- Technical Analysis - SMA, RSI, MACD, Bollinger Bands, trend detection
-- Sentiment Analysis - News aggregation, market psychology, catalyst identification
-- Risk Modeling - VaR, max drawdown, volatility forecasting, stress testing
-- Price Prediction - Trend extrapolation, support/resistance levels
+### 1. Multi-Agent Financial Analysis
+The application uses four specialized agents:
+- Data Analyst: collects market data and computes technical indicators
+- News Analyst: processes financial news and uploaded documents
+- Risk Analyst: evaluates volatility, risk exposure, and alerts
+- Investment Advisor: produces a final BUY / HOLD / SELL recommendation
 
-### Intelligent Agents
-- Data Analyst - Quantitative analysis, technical indicators, price patterns
-- News Analyst - Sentiment extraction, market intelligence, catalysts
-- Risk Analyst - Portfolio risk assessment, scenario analysis, alerts
-- Investment Advisor - Recommendations synthesis, position sizing, entry/exit
+### 2. Retrieval-Augmented Generation (RAG)
+The system integrates Haystack to retrieve relevant information from local documents and financial text, making the analysis more contextual and grounded in source material.
 
-### Production Interfaces
-- Streamlit Dashboard - Interactive real-time charts, document upload
-- Flask Web App - RESTful API, form-based UI, batch processing
-- Both share same core - CrewAI analysis pipeline
+### 3. Real-Time Market Intelligence
+The platform retrieves live market information through financial data providers and can combine it with document-based insights for richer decision-making.
 
-### Enterprise Features
-- RESTful API with validation
-- Error handling and graceful fallbacks
-- Multi-ticker parallel processing
-- Data caching and optimization
-- Complete audit logging
-- Security best practices
+### 4. Web-Based Interfaces
+The project includes:
+- A Flask web application for a structured web experience and API access
+- A Streamlit interface for interactive dashboards and exploration
 
----
+### 5. Fallback Mode
+If OpenAI credentials are not available, the system can still run using a deterministic fallback pipeline built from rule-based logic and real market data.
 
-## Key Highlights
-
-### 4 Autonomous AI Agents
-```
-Data Analyst       → Technical analysis, trend detection, momentum
-News Analyst       → Sentiment analysis, market intelligence, catalysts
-Risk Analyst       → Portfolio risk, VaR, stress testing, scenarios
-Investment Advisor → Synthesis, recommendations, position sizing
-```
-
-### Advanced RAG Pipeline
-- Haystack integration for document processing
-- Vector embeddings for semantic search
-- ChromaDB vector database
-- Multi-document analysis (earnings reports, prospectuses, risk disclosures)
-
-### Multi-Source Data Integration
-- yfinance - OHLCV, technical indicators
-- Finnhub - Institutional news, earnings calendar
-- NewsAPI - Global news sentiment
-- Real-time market data with automatic caching
-
-### Two Production-Ready Interfaces
-| Interface | Best For | Features |
-|-----------|----------|----------|
-| Streamlit Dashboard | Data Scientists, Analysts | Interactive charts, real-time updates, document upload |
-| Flask API | Developers, Integrations | RESTful endpoints, programmatic access, batch processing |
-
-### Intelligent Fallback System
-Continues operating even without API keys using deterministic analysis pipeline.
+### 6. Document Upload and Question Answering
+Users can upload financial documents and ask questions, enabling the system to reason over uploaded content in addition to market data.
 
 ---
 
-## System Architecture
+## Architecture
 
-```
-┌────────────────────────────────────────────────────────────────────────┐
-│                        USER INTERFACES                                 │
-│  ┌──────────────────────────┐         ┌──────────────────────────┐   │
-│  │   Flask Web App          │         │  Streamlit Dashboard     │   │
-│  │  http://localhost:5000   │         │ http://localhost:8501    │   │
-│  └──────────────┬───────────┘         └──────────┬───────────────┘   │
-└─────────────────┼──────────────────────────────────┼─────────────────┘
-                  │                                  │
-                  └──────────────────┬───────────────┘
-                                     │
-┌────────────────────────────────────────────────────────────────────────┐
-│                   CREWAI ORCHESTRATION LAYER                           │
-│                                                                        │
-│  ┌────────────────────────────────────────────────────────────────┐  │
-│  │  Crew Manager (app/crew.py)                                    │  │
-│  │  - 4 Specialized AI Agents                                     │  │
-│  │  - Task Pipeline Management                                    │  │
-│  │  - Output Validation & Formatting                              │  │
-│  │  - Error Handling & Fallbacks                                  │  │
-│  └────────────────────────────────────────────────────────────────┘  │
-│                                                                        │
-│  Data Analyst │  News Analyst │  Risk Analyst │  Investment Advisor  │
-│                                                                        │
-└────────────┬─────────────────────────────────────────────┬────────────┘
-             │                                             │
-┌────────────┴─────────────────────────────────────────────┴────────────┐
-│                      TOOLS & DATA LAYER                               │
-│                                                                        │
-│  Market Data Tools                Document Processing               │
-│  - yfinance                       - Haystack RAG                    │
-│  - Finnhub API                    - Vector Embeddings              │
-│  - NewsAPI                        - ChromaDB Storage               │
-│  - Technical Calculation          - PDF Processing                 │
-│                                                                        │
-└─────────────────────┬─────────────────────────────────────────────────┘
-                      │
-                      ↓
-┌────────────────────────────────────────────────────────────────────────┐
-│           STRUCTURED OUTPUT: JSON Recommendation                       │
-│                                                                        │
-│  - Market Analysis (Price, SMA, Volatility, Trend)                   │
-│  - Sentiment Analysis (Score, Insights, Drivers)                     │
-│  - Risk Assessment (Score 0-100, Risk Level, Scenarios)              │
-│  - Investment Decision (BUY/HOLD/SELL + Confidence + Rationale)      │
-│                                                                        │
-└────────────────────────────────────────────────────────────────────────┘
-```
+The system follows a sequential multi-agent pipeline:
+
+1. Market data is collected for the selected ticker
+2. Technical indicators are computed
+3. News and document insights are gathered
+4. Risk is evaluated based on market conditions and sentiment
+5. A final recommendation is generated by the advisor agent
+
+The main components are:
+- Flask or Streamlit front end
+- CrewAI orchestration layer
+- Haystack-based RAG pipeline
+- Market data and document processing tools
+- Structured output for recommendations and analysis
 
 ---
 
-## Quick Start (5 Minutes)
+## How the System Works
 
-### Prerequisites
-- Python 3.10+
-- Git
-- API Keys (optional - system works with fallback):
-  - OpenAI (https://platform.openai.com/api-keys)
-  - Finnhub (https://finnhub.io/)
-  - NewsAPI (https://newsapi.org/)
+### Data Analyst Agent
+This agent focuses on quantitative analysis. It retrieves market metrics such as:
+- Current price
+- Moving averages
+- Volatility
+- Trend direction
 
-### Installation
+### News Analyst Agent
+This agent processes financial news and documents to extract:
+- Sentiment
+- Key insights
+- Relevant contextual information
 
-```bash
-# 1. Clone repository
-git clone https://github.com/malak-maziane/AI-Quant-Analyst---Haystack-Crewai.git
-cd AI-Quant-Analyst---Haystack-Crewai
+### Risk Analyst Agent
+This agent evaluates the overall risk profile using:
+- Market volatility
+- Sentiment signals
+- Trend information
+- Data reliability
 
-# 2. Create virtual environment
-python -m venv .venv
-.venv\Scripts\activate  # Windows
-# source .venv/bin/activate  # macOS/Linux
-
-# 3. Install dependencies
-pip install -r requirements.txt
-
-# 4. Configure environment
-cp .env.example .env
-# Edit .env and add OPENAI_API_KEY if available
-```
-
-### Launch
-
-Streamlit Dashboard (Recommended):
-```bash
-streamlit run app.py
-# Opens at http://localhost:8501
-```
-
-Flask Web Application:
-```bash
-python app/main.py
-# Opens at http://localhost:5000
-```
+### Investment Advisor Agent
+This agent combines all prior signals to produce:
+- A final decision: BUY, HOLD, or SELL
+- A confidence score
+- A justification for the recommendation
 
 ---
 
-## Features
+## Functionalities
 
-### Comprehensive Financial Analysis
-- Technical Analysis - SMA, RSI, MACD, Bollinger Bands, trend detection
-- Sentiment Analysis - News aggregation, market psychology, catalyst identification
-- Risk Modeling - VaR, max drawdown, volatility forecasting, stress testing
-- Price Prediction - Trend extrapolation, support/resistance levels
-
-### Intelligent Agents
-- Data Analyst - Quantitative analysis, technical indicators, price patterns
-- News Analyst - Sentiment extraction, market intelligence, catalysts
-- Risk Analyst - Portfolio risk assessment, scenario analysis, alerts
-- Investment Advisor - Recommendations synthesis, position sizing, entry/exit
-
-### Production Interfaces
-- Streamlit Dashboard - Interactive real-time charts, document upload
-- Flask Web App - RESTful API, form-based UI, batch processing
-- Both share same core - CrewAI analysis pipeline
-
-### Enterprise Features
-- RESTful API with validation
-- Error handling and graceful fallbacks
-- Multi-ticker parallel processing
-- Data caching and optimization
-- Complete audit logging
-- Security best practices
-
----
-
-## AI Agents Overview
-
-| Agent | Role | Tools | Output |
-|-------|------|-------|--------|
-| Data Analyst | Quantitative Data Analyst | MarketDataTool | Trend analysis, technical indicators |
-| News Analyst | Financial NLP Analyst | DocumentReaderTool | Sentiment analysis, key insights |
-| Risk Analyst | Risk Management Specialist | None | Risk score, alerts |
-| Investment Advisor | Senior Investment Advisor | None | BUY/HOLD/SELL recommendation |
-
----
-
-## API Endpoints (Flask)
-
-| Method | Route | Description |
-|--------|-------|-------------|
-| GET | / | Landing page with analysis form |
-| POST | /analyze | Process analysis request |
-| GET | /result | Display analysis results |
-| GET/POST | /api/analyze | JSON API for analysis |
-| GET | /health | Health check endpoint |
-
----
-
-## Tech Stack
-
-| Tool | Version | Purpose |
-|------|---------|---------|
-| crewai | 0.28.0 | Multi-agent orchestration |
-| haystack-ai | 2.3.0 | Document RAG pipeline |
-| yfinance | 0.2.38 | Financial data fetching |
-| flask | 3.0.3 | Web application framework |
-| streamlit | 1.35.0 | Interactive dashboard |
-| pandas | 2.2.0 | Data manipulation |
-| plotly | 5.22.0 | Data visualization |
+The application supports the following capabilities:
+- Stock ticker analysis
+- Technical indicator calculation
+- News and document sentiment analysis
+- Risk scoring and alert generation
+- Final investment recommendations
+- Web-based analysis through Flask
+- Interactive dashboard experience through Streamlit
+- Optional question answering over uploaded documents
+- Fallback execution when AI APIs are unavailable
 
 ---
 
 ## Project Structure
 
-```
-AI-Quant-Analyst---Haystack-Crewai/
-│
-├── app/                          # Flask + CrewAI core
-│   ├── __init__.py               # Flask app factory
-│   ├── main.py                   # Flask entry point
-│   ├── agents.py                 # 4 AI agent definitions
-│   ├── tasks.py                  # Task definitions
-│   ├── crew.py                   # CrewAI orchestration
-│   ├── utils.py                  # Helper functions
-│   ├── routes.py                 # Flask routes & API
-│   └── forms.py                  # WTForms validation
-│
-├── tools/                        # Data & NLP tools
-│   ├── __init__.py
-│   ├── market_data.py            # yfinance + indicators
-│   └── document_reader.py        # Haystack RAG pipeline
-│
-├── templates/                    # Flask HTML templates
-│   ├── base.html                 # Layout template
-│   ├── index.html                # Landing page
-│   ├── result.html               # Results dashboard
-│   ├── loading.html              # Loading screen
-│   └── error.html                # Error page
-│
-├── static/                       # Flask assets
-│   ├── css/style.css             # Dark finance theme
-│   ├── js/main.js                # Form handling
-│   ├── js/charts.js              # Chart.js integration
-│   └── img/logo.png              # Project logo
-│
-├── data/                         # Sample data
-│   └── sample_news.txt           # Sample financial text
-│
-├── uploads/                      # User file uploads
-│
-├── app.py                        # Streamlit entry point
-├── config.py                     # Global configuration
-├── requirements.txt              # Python dependencies
-├── .env.example                  # Environment template
-├── .gitignore                    # Git ignore rules
-└── README.md                     # This file
+```text
+AI-Quant-Analyst/
+├── app/                    # Core Flask application and agent orchestration
+│   ├── agents.py
+│   ├── crew.py
+│   ├── forms.py
+│   ├── main.py
+│   ├── routes.py
+│   ├── tasks.py
+│   └── utils.py
+├── tools/                  # Financial data and document processing tools
+│   ├── market_data.py
+│   ├── document_reader.py
+│   └── haystack_tools.py
+├── templates/              # Flask HTML templates
+├── static/                 # CSS, JS, and image assets
+├── data/                   # Sample financial data files
+├── uploads/                # User-uploaded documents
+├── app.py                  # Streamlit entry point
+├── config.py               # Global configuration
+├── requirements.txt        # Python dependencies
+├── README.md               # Project documentation
+└── LICENSE                 # MIT license
 ```
 
 ---
 
-## Configuration
+## Technologies Used
 
-### Environment Variables (.env)
+- Python 3.10+
+- CrewAI for multi-agent orchestration
+- Haystack for RAG and document retrieval
+- Flask for the web application
+- Streamlit for interactive analysis views
+- yfinance for market data
+- ChromaDB and embeddings for semantic retrieval
+- OpenAI models for advanced reasoning when available
+
+---
+
+## Installation
+
+### Prerequisites
+- Python 3.10 or higher
+- Git
+- Optional API keys for enhanced model-based analysis
+
+### Setup
 
 ```bash
-# OpenAI API Configuration
-OPENAI_API_KEY=sk-your-key-here
-OPENAI_MODEL=gpt-4-turbo-preview
-
-# Financial Data APIs
-FINNHUB_API_KEY=your_finnhub_key
-NEWS_API_KEY=your_newsapi_key
-
-# Flask Configuration
-SECRET_KEY=your-super-secret-key
-DEBUG=False
-FLASK_ENV=production
-
-# Application Settings
-UPLOAD_FOLDER=uploads
-MAX_CONTENT_LENGTH=104857600
-CACHE_ENABLED=true
+git clone https://github.com/malak-maziane/AI-Quant-Analyst.git
+cd AI-Quant-Analyst
+python -m venv .venv
+.venv\Scripts\activate      # Windows
+# source .venv/bin/activate # macOS/Linux
+pip install -r requirements.txt
 ```
 
----
+### Environment Variables
+Create a .env file with the required values if you want to enable full LLM-based reasoning:
 
-## Security Best Practices
-
-### API Key Management
 ```bash
-# Don't commit real keys
-git add .env  # WRONG
-
-# Use environment-specific .env
-.env.local (for development - gitignored)
-.env.production (for production - gitignored)
-
-# Use .env.example for template
-.env.example (committed to repo - no sensitive data)
+OPENAI_API_KEY=your_openai_key
+OPENAI_MODEL=gpt-4o
 ```
+
+If no key is provided, the application will automatically use the fallback mode.
 
 ---
 
-## Use Cases
+## Running the Application
 
-### Day Trader Analysis
-```python
-from app.crew import QuantAnalystCrew
-
-crew = QuantAnalystCrew(ticker="TSLA")
-results = crew.run()
-
-entry_price = results['advisor_recommendation']['entry_points'][0]['price']
-stop_loss = results['advisor_recommendation']['stop_loss']
-print(f"Buy TSLA at ${entry_price}, stop at ${stop_loss}")
-```
-
-### Portfolio Risk Assessment
-```python
-portfolio_tickers = ["AAPL", "MSFT", "JPM", "JNJ", "XOM"]
-
-for ticker in portfolio_tickers:
-    crew = QuantAnalystCrew(ticker=ticker)
-    results = crew.run()
-    risk_score = results['risk_analyst']['risk_score_0_to_100']
-    print(f"{ticker}: Risk Score = {risk_score}/100")
-```
-
-### Event-Driven Analysis
-```python
-crew = QuantAnalystCrew(
-    ticker="NVDA",
-    question="What is the market impact of the Q4 earnings beat?",
-    document_path="NVDA_Q4_Earnings.pdf"
-)
-results = crew.run()
-```
-
----
-
-## Troubleshooting
-
-### OPENAI_API_KEY not found
+### Streamlit Interface
 ```bash
-# Verify .env file exists
-ls -la .env
-
-# Ensure key is set correctly
-echo $OPENAI_API_KEY
-
-# Restart application after adding key
+streamlit run app.py
 ```
 
-### yfinance data not available
-```python
-import yfinance as yf
-data = yf.download("AAPL", period="1y")
-print(data.head())
-```
-
-### CrewAI timeout
-```python
-os.environ["FORCE_FALLBACK"] = "true"
-# Application will use deterministic pipeline
-```
-
-### Streamlit app not starting
+### Flask Application
 ```bash
-streamlit cache clear
-streamlit run app.py --logger.level=debug
+python app/main.py
 ```
 
----
-
-## Performance Metrics
-
-Typical analysis runtime on standard hardware:
-
-| Component | Time | Notes |
-|-----------|------|-------|
-| Market data fetch | 2-3s | yfinance + Finnhub |
-| Technical analysis | 1-2s | Indicator calculation |
-| Sentiment analysis | 5-10s | News fetching + NLP |
-| Risk assessment | 3-5s | Historical volatility |
-| Agent synthesis | 10-20s | CrewAI orchestration |
-| Total end-to-end | 25-45s | With LLM enabled |
-| Fallback mode | 5-10s | Deterministic pipeline |
+The Flask app will typically run on http://localhost:5000, while the Streamlit app runs on http://localhost:8501.
 
 ---
 
-## Data Sources & APIs
+## API Endpoints
 
-| Source | Purpose | Free Tier | Rate Limit |
-|--------|---------|-----------|-----------|
-| yfinance | Historical OHLCV data, technical indicators | Yes | None |
-| Finnhub | Institutional news, earnings calendar | Yes | 60 req/min |
-| NewsAPI | Global news aggregation, sentiment data | Yes | 100 req/day |
-| OpenAI | CrewAI LLM backbone | Paid | Varies |
-| ChromaDB | Vector database for embeddings | Yes | None |
+The Flask application exposes the following endpoints:
+- GET / : landing page
+- POST /analyze : analyze a ticker through the form workflow
+- GET /result : display the analysis result
+- GET/POST /api/analyze : JSON API endpoint
+- GET /health : health check endpoint
+
+---
+
+## Example Use Case
+
+A user can provide a stock ticker such as AAPL and optionally upload a financial report. The system will then:
+1. Gather market data
+2. Analyze the document context
+3. Evaluate sentiment and risk
+4. Return a structured investment recommendation
+
+---
+
+## Fallback Mode
+
+If the OpenAI API is unavailable or disabled, the application still works through a rule-based fallback system. This mode uses real market data and deterministic logic to produce a usable analysis without depending on external LLM access.
 
 ---
 
 ## License
 
-This project is licensed under the MIT License - see the LICENSE file for details.
+This project is licensed under the MIT License. See the LICENSE file for full details.
 
-You are free to:
-- Use commercially
-- Modify the source code
-- Distribute copies
-- Use for private projects
-
-You must:
-- Include license and copyright notice
-- State significant changes made
+Permission is hereby granted, free of charge, to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the software, under the conditions stated in the license.
 
 ---
 
-## Support & Contact
+## Contributing
 
-- Email: malakmaziane2@gmail.com
+Contributions are welcome. If you would like to improve the project, please open an issue or submit a pull request with a clear explanation of your changes.
 
 ---
 
-Made with care for the quantitative finance community
+## GitHub Push Guide
+
+If you want to publish this project on GitHub, use the following commands:
+
+```bash
+git init
+git branch -M main
+git add .
+git commit -m "Initial commit"
+git remote add origin https://github.com/malak-maziane/AI-Quant-Analyst.git
+git push -u origin main
+```
+
+If the remote already exists, use:
+
+```bash
+git add .
+git commit -m "Update README and project documentation"
+git push -u origin main
+```
+
+---
+
+## Contact
+
+For questions or collaboration, you can contact Malak Maziane at malakmaziane2@gmail.com.
